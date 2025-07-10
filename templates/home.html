@@ -1,0 +1,94 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="landing-page d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <!-- Hero Section -->
+                <div class="mb-5">
+                    <h1 class="display-3 fw-bold text-white mb-4">
+                        Welcome to <span class="text-warning">TaskManager</span>
+                    </h1>
+                    <p class="lead text-white-50 mb-4 fs-4">
+                        Streamline your workflow, organize your projects, and boost productivity with our intuitive task management system.
+                    </p>
+                    
+                    {% if user.is_authenticated %}
+                        <div class="mb-4">
+                            <h3 class="text-white mb-3">Welcome back, <span class="text-warning">{{ user.username }}</span>!</h3>
+                            <a href="{% url 'dashboard' %}" class="btn btn-warning btn-lg px-5 py-3 me-3">
+                                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                            </a>
+                            <a href="{% url 'create_task' %}" class="btn btn-outline-light btn-lg px-5 py-3">
+                                <i class="fas fa-plus me-2"></i>Create Task
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="mb-5">
+                            <a href="{% url 'register' %}" class="btn btn-warning btn-lg px-5 py-3 me-3">
+                                <i class="fas fa-user-plus me-2"></i>Get Started
+                            </a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-5 py-3">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Additional landing page specific styles */
+    
+    .feature-icon i {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover .feature-icon i {
+        transform: scale(1.1);
+    }
+    
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+    
+    .btn {
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    /* Responsive adjustments */
+   /* 3. Fix responsive adjustments - remove background-attachment: scroll */
+@media (max-width: 768px) {
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .btn-lg {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    
+    .landing-page {
+        /* REMOVED: background-attachment: scroll; */
+        padding: 2rem 0;
+    }
+}
+</style>
+{% endblock %}

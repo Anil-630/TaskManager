@@ -1,0 +1,57 @@
+<!-- templates/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Dashboard</h2>
+    <a href="{% url 'create_task' %}" class="btn btn-primary">New Task</a>
+</div>
+
+<!-- Tasks -->
+<div class="row">
+    {% for task in tasks %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <small>{{ task.project.name }}</small>
+                    <span class="badge bg-{% if task.priority == 'high' %}danger{% elif task.priority == 'medium' %}warning{% else %}secondary{% endif %}">
+                        {{ task.get_priority_display }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <p class="card-text">{{ task.description|truncatewords:10 }}</p>
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted">Due: {{ task.due_date }}</small>
+                        </div>
+                        <div class="col-6">
+                            <span class="badge bg-{% if task.status == 'completed' %}success{% elif task.status == 'in_progress' %}info{% else %}secondary{% endif %}">
+                                {{ task.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small>By {{ task.created_by.username }}</small>
+                        <div>
+                            {% if user.is_superuser or user == task.created_by %}
+                                <a href="{% url 'edit_task' task.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Delete this task?')">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No tasks found. <a href="{% url 'create_task' %}">Create your first task</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
